@@ -23,18 +23,20 @@
 <main class="content">
   <header class="topbar">
     <div class="navArrows"><button id="back"><i class="fa-solid fa-chevron-left"></i></button><button id="forward"><i class="fa-solid fa-chevron-right"></i></button></div>
-    <div class="searchWrap"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="What do you want to play?"></div>
+    <div class="searchWrap"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="Search songs, artists, or paste a YouTube URL"></div>
+    <button class="ytKey" id="ytKey" title="Set YouTube Data API key"><i class="fa-brands fa-youtube"></i><span>Connect</span></button>
     <button class="profile"><i class="fa-solid fa-user"></i><span>You</span></button>
   </header>
   <section id="homeView" class="view">
-    <div class="hero"><div><p class="eyebrow">YOUR MUSIC</p><h1>Good music.<br>Good mood.</h1><p>Play your favorite tracks and keep the music going.</p></div><div class="heroArt"><i class="fa-solid fa-headphones"></i></div></div>
+    <div class="hero"><div><p class="eyebrow">YOUR MUSIC</p><h1>Good music.<br>Good mood.</h1><p>Play your local tracks or search YouTube and listen through the official embedded player.</p></div><div class="heroArt"><i class="fa-solid fa-headphones"></i></div></div>
     <div class="sectionHead"><h2>Made for you</h2><button id="showAll">Show all</button></div>
     <div class="cards" id="songCards"></div>
   </section>
-  <section id="searchView" class="view hidden"><div class="pageTitle"><h1>Search</h1><p>Find something to play.</p></div><div class="cards" id="searchCards"></div></section>
+  <section id="searchView" class="view hidden"><div class="pageTitle"><h1>Search</h1><p>Search YouTube with your API key, or paste a YouTube video URL into the search box.</p></div><div class="cards" id="searchCards"></div></section>
   <section id="libraryView" class="view hidden"><div class="pageTitle"><h1>Your Library</h1><p>Your saved music in one place.</p></div><div class="libraryGrid" id="libraryGrid"></div></section>
 </main>
 </div>
+<div id="youtubeDock" class="youtubeDock hidden"><div id="youtubePlayer"></div></div>
 <div class="nowPlaying">
   <div class="trackInfo"><img id="cover" src="images/cover1.jpg" alt="Album cover"><div><h3 id="title">Song 1</h3><p id="artist">My Songs</p></div><button id="like" class="iconBtn" title="Like"><i class="fa-regular fa-heart"></i></button></div>
   <div class="playerCenter">
@@ -43,7 +45,9 @@
   </div>
   <div class="playerRight"><button id="queue" class="iconBtn"><i class="fa-solid fa-list"></i></button><i class="fa-solid fa-volume-high volumeIcon"></i><input type="range" id="volume" min="0" max="1" step="0.01" value="1"></div>
 </div>
+<audio id="audio" preload="metadata"></audio>
 <div class="toast" id="toast"></div>
-<script src="script.js?v=20260903spotify"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="script.js?v=20260903youtube"></script>
 </body>
 </html>
