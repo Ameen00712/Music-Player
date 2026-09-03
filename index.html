@@ -4,75 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Music Player</title>
-
 <link rel="stylesheet" href="style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
-
 <body>
-
-<div class="player">
-
-<h2>🎵 Music Player</h2>
-
-<img
-id="cover"
-src="images/cover1.jpg"
-alt="Cover">
-
-<h3 id="title">Song 1</h3>
-
-<audio id="audio"></audio>
-
-<div class="time">
-
-<span id="currentTime">0:00</span>
-
-<input
-type="range"
-id="progress"
-value="0">
-
-<span id="duration">0:00</span>
-
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><i class="fa-brands fa-spotify"></i><span>Spotify</span></div>
+  <nav class="mainNav">
+    <button class="navItem active" data-view="home"><i class="fa-solid fa-house"></i> Home</button>
+    <button class="navItem" data-view="search"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+    <button class="navItem" data-view="library"><i class="fa-solid fa-book"></i> Your Library</button>
+  </nav>
+  <div class="libraryHead"><span>Your Library</span><button id="addPlaylist" title="Create playlist"><i class="fa-solid fa-plus"></i></button></div>
+  <div class="playlistList" id="playlistList"><button class="playlistItem active"><span class="playlistIcon"><i class="fa-solid fa-music"></i></span><span>My Songs</span></button></div>
+  <div class="sidebarFooter"><span>Made for music</span></div>
+</aside>
+<main class="content">
+  <header class="topbar">
+    <div class="navArrows"><button id="back"><i class="fa-solid fa-chevron-left"></i></button><button id="forward"><i class="fa-solid fa-chevron-right"></i></button></div>
+    <div class="searchWrap"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="What do you want to play?"></div>
+    <button class="profile"><i class="fa-solid fa-user"></i><span>You</span></button>
+  </header>
+  <section id="homeView" class="view">
+    <div class="hero"><div><p class="eyebrow">YOUR MUSIC</p><h1>Good music.<br>Good mood.</h1><p>Play your favorite tracks and keep the music going.</p></div><div class="heroArt"><i class="fa-solid fa-headphones"></i></div></div>
+    <div class="sectionHead"><h2>Made for you</h2><button id="showAll">Show all</button></div>
+    <div class="cards" id="songCards"></div>
+  </section>
+  <section id="searchView" class="view hidden"><div class="pageTitle"><h1>Search</h1><p>Find something to play.</p></div><div class="cards" id="searchCards"></div></section>
+  <section id="libraryView" class="view hidden"><div class="pageTitle"><h1>Your Library</h1><p>Your saved music in one place.</p></div><div class="libraryGrid" id="libraryGrid"></div></section>
+</main>
 </div>
-
-<div class="controls">
-
-<button id="prev">
-<i class="fas fa-backward"></i>
-</button>
-
-<button id="play">
-<i class="fas fa-play"></i>
-</button>
-
-<button id="next">
-<i class="fas fa-forward"></i>
-</button>
-
+<div class="nowPlaying">
+  <div class="trackInfo"><img id="cover" src="images/cover1.jpg" alt="Album cover"><div><h3 id="title">Song 1</h3><p id="artist">My Songs</p></div><button id="like" class="iconBtn" title="Like"><i class="fa-regular fa-heart"></i></button></div>
+  <div class="playerCenter">
+    <div class="controls"><button id="shuffle" class="controlBtn" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button><button id="prev" class="controlBtn"><i class="fa-solid fa-backward-step"></i></button><button id="play" class="playMain"><i class="fa-solid fa-play"></i></button><button id="next" class="controlBtn"><i class="fa-solid fa-forward-step"></i></button><button id="repeat" class="controlBtn" title="Repeat"><i class="fa-solid fa-repeat"></i></button></div>
+    <div class="progressRow"><span id="currentTime">0:00</span><input type="range" id="progress" min="0" max="100" value="0"><span id="duration">0:00</span></div>
+  </div>
+  <div class="playerRight"><button id="queue" class="iconBtn"><i class="fa-solid fa-list"></i></button><i class="fa-solid fa-volume-high volumeIcon"></i><input type="range" id="volume" min="0" max="1" step="0.01" value="1"></div>
 </div>
-
-<div class="volume">
-
-<i class="fas fa-volume-up"></i>
-
-<input
-type="range"
-id="volume"
-min="0"
-max="1"
-step="0.01"
-value="1">
-
-</div>
-
-</div>
-
-<script src="script.js"></script>
-
+<div class="toast" id="toast"></div>
+<script src="script.js?v=20260903spotify"></script>
 </body>
 </html>
