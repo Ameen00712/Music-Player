@@ -1,4 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Music Player</title><link rel="stylesheet" href="style.css?v=20260903fix6"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"></head>
-<body><div class="app"><aside class="sidebar"><div class="brand"><i class="fa-brands fa-spotify"></i><span>Spotify</span></div><nav class="mainNav"><button class="navItem active" data-view="home" type="button"><i class="fa-solid fa-house"></i> Home</button><button class="navItem" data-view="search" type="button"><i class="fa-solid fa-magnifying-glass"></i> Search</button><button class="navItem" data-view="library" type="button"><i class="fa-solid fa-book"></i> Your Library</button></nav><div class="libraryHead"><span>Your Library</span><button id="addPlaylist" type="button"><i class="fa-solid fa-plus"></i></button></div><div class="playlistList"><button class="playlistItem active" type="button"><span class="playlistIcon"><i class="fa-solid fa-music"></i></span><span>My Songs</span></button></div></aside><main class="content"><header class="topbar"><div class="navArrows"><button id="back" type="button"><i class="fa-solid fa-chevron-left"></i></button><button id="forward" type="button"><i class="fa-solid fa-chevron-right"></i></button></div><div class="searchWrap"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="Search songs, artists, or YouTube URL" autocomplete="off"></div><button class="ytKey" id="ytKey" type="button"><i class="fa-brands fa-youtube"></i><span>Connect</span></button><button class="profile" type="button"><i class="fa-solid fa-user"></i><span>You</span></button></header><section id="homeView" class="view"><div class="hero"><div><p class="eyebrow">YOUR MUSIC</p><h1>Good music.<br>Good mood.</h1><p>Fresh trending music from YouTube, plus your local tracks and independent music on Jamendo.</p></div><div class="heroArt"><i class="fa-solid fa-headphones"></i></div></div><div class="sectionHead"><div><h2>Trending now 🇮🇳</h2><p class="sectionSub">Fresh popular music in India</p></div><button id="refreshTrending" type="button">Refresh</button></div><div class="cards" id="songCards"></div></section><section id="searchView" class="view hidden"><div class="pageTitle"><h1>Search</h1><p>Search Jamendo and YouTube, or paste a YouTube URL.</p></div><div class="cards" id="searchCards"></div></section><section id="libraryView" class="view hidden"><div class="pageTitle"><h1>Your Library</h1><p>Your saved music in one place.</p></div><div class="libraryGrid" id="libraryGrid"></div></section></main></div><div class="nowPlaying"><div class="trackInfo" id="nowPlayingTrack"><img id="cover" src="images/cover1.jpg" alt="Album cover"><div><h3 id="title">Song 1</h3><p id="artist">My Songs</p></div><button id="like" class="iconBtn" type="button"><i class="fa-regular fa-heart"></i></button></div><div class="playerCenter"><div class="controls"><button id="shuffle" class="controlBtn" type="button"><i class="fa-solid fa-shuffle"></i></button><button id="prev" class="controlBtn" type="button"><i class="fa-solid fa-backward-step"></i></button><button id="play" class="playMain" type="button"><i class="fa-solid fa-play"></i></button><button id="next" class="controlBtn" type="button"><i class="fa-solid fa-forward-step"></i></button><button id="repeat" class="controlBtn" type="button"><i class="fa-solid fa-repeat"></i></button></div><div class="progressRow"><span id="currentTime">0:00</span><input type="range" id="progress" min="0" max="100" value="0"><span id="duration">0:00</span></div></div><div class="playerRight"><button id="queue" class="iconBtn" type="button"><i class="fa-solid fa-list"></i></button><i class="fa-solid fa-volume-high volumeIcon"></i><input type="range" id="volume" min="0" max="1" step="0.01" value="1"></div></div><div id="nowPlayingPage" class="nowPlayingPage hidden"><div class="fullPlayerTop"><button id="closeNowPlaying" class="closePlayer" type="button"><i class="fa-solid fa-chevron-down"></i></button><span>NOW PLAYING</span><button class="closePlayer" type="button"><i class="fa-solid fa-ellipsis"></i></button></div><div class="fullPlayerBody"><div class="fullArtwork"><img id="fullCover" src="images/cover1.jpg" alt="Album cover"></div><div class="fullTrackMeta"><p id="fullArtist">My Songs</p><h1 id="fullTitle">Song 1</h1><button id="fullLike" class="fullLike" type="button"><i class="fa-regular fa-heart"></i></button></div><div class="fullProgress"><div class="fullTimes"><span id="fullCurrent">0:00</span><span id="fullDuration">0:00</span></div><input id="fullProgress" type="range" min="0" max="100" value="0"></div><div class="fullControls"><button id="fullShuffle" type="button"><i class="fa-solid fa-shuffle"></i></button><button id="fullPrev" type="button"><i class="fa-solid fa-backward-step"></i></button><button id="fullPlay" class="fullPlay" type="button"><i class="fa-solid fa-play"></i></button><button id="fullNext" type="button"><i class="fa-solid fa-forward-step"></i></button><button id="fullRepeat" type="button"><i class="fa-solid fa-repeat"></i></button></div><div class="fullVolume"><i class="fa-solid fa-volume-high"></i><input id="fullVolume" type="range" min="0" max="1" step="0.01" value="1"></div></div></div><audio id="audio" preload="metadata"></audio><div class="toast" id="toast"></div><script src="https://www.youtube.com/iframe_api"></script><script src="script.js?v=20260903fix6"></script></body></html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Music Player</title>
+<link rel="stylesheet" href="style.css?v=20260903fix7">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><i class="fa-brands fa-spotify"></i><span>Spotify</span></div>
+<nav class="mainNav">
+<button class="navItem active" data-view="home" type="button"><i class="fa-solid fa-house"></i> Home</button>
+<button class="navItem" data-view="search" type="button"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+<button class="navItem" data-view="library" type="button"><i class="fa-solid fa-book"></i> Your Library</button>
+</nav>
+<div class="libraryHead"><span>Your Library</span><button id="addPlaylist" type="button"><i class="fa-solid fa-plus"></i></button></div>
+<div class="playlistList"><button class="playlistItem active" type="button"><span class="playlistIcon"><i class="fa-solid fa-music"></i></span><span>My Songs</span></button></div>
+</aside>
+<main class="content">
+<header class="topbar">
+<div class="navArrows"><button id="back" type="button"><i class="fa-solid fa-chevron-left"></i></button><button id="forward" type="button"><i class="fa-solid fa-chevron-right"></i></button></div>
+<div class="searchWrap"><i class="fa-solid fa-magnifying-glass"></i><input id="search" type="search" placeholder="Search songs, artists, or YouTube URL" autocomplete="off"></div>
+<button class="ytKey" id="ytKey" type="button"><i class="fa-brands fa-youtube"></i><span>Connect</span></button>
+<button class="profile" type="button"><i class="fa-solid fa-user"></i><span>You</span></button>
+</header>
+<section id="homeView" class="view">
+<div class="hero"><div><p class="eyebrow">YOUR MUSIC</p><h1>Good music.<br>Good mood.</h1><p>Fresh trending music from YouTube, plus your local tracks and independent music on Jamendo.</p></div><div class="heroArt"><i class="fa-solid fa-headphones"></i></div></div>
+<div class="sectionHead"><div><h2>Trending now 🇮🇳</h2><p class="sectionSub">Fresh popular music in India</p></div><button id="refreshTrending" type="button">Refresh</button></div>
+<div class="cards" id="songCards"></div>
+</section>
+<section id="searchView" class="view hidden"><div class="pageTitle"><h1>Search</h1><p>Search Jamendo and YouTube, or paste a YouTube URL.</p></div><div class="cards" id="searchCards"></div></section>
+<section id="libraryView" class="view hidden"><div class="pageTitle"><h1>Your Library</h1><p>Your saved music in one place.</p></div><div class="libraryGrid" id="libraryGrid"></div></section>
+</main>
+</div>
+<div class="nowPlaying">
+<div class="trackInfo" id="nowPlayingTrack">
+<img id="cover" src="images/cover1.jpg" alt="Album cover">
+<div><h3 id="title">Song 1</h3><p id="artist">My Songs</p></div>
+<button id="like" class="iconBtn" type="button"><i class="fa-regular fa-heart"></i></button>
+</div>
+<div class="playerCenter">
+<div class="controls"><button id="shuffle" class="controlBtn" type="button"><i class="fa-solid fa-shuffle"></i></button><button id="prev" class="controlBtn" type="button"><i class="fa-solid fa-backward-step"></i></button><button id="play" class="playMain" type="button"><i class="fa-solid fa-play"></i></button><button id="next" class="controlBtn" type="button"><i class="fa-solid fa-forward-step"></i></button><button id="repeat" class="controlBtn" type="button"><i class="fa-solid fa-repeat"></i></button></div>
+<div class="progressRow"><span id="currentTime">0:00</span><input type="range" id="progress" min="0" max="100" value="0"><span id="duration">0:00</span></div>
+</div>
+<div class="playerRight"><button id="queue" class="iconBtn" type="button"><i class="fa-solid fa-list"></i></button><i class="fa-solid fa-volume-high volumeIcon"></i><input type="range" id="volume" min="0" max="1" step="0.01" value="1"></div>
+</div>
+<div id="nowPlayingPage" class="nowPlayingPage hidden">
+<div class="fullPlayerTop"><button id="closeNowPlaying" class="closePlayer" type="button"><i class="fa-solid fa-chevron-down"></i></button><span>NOW PLAYING</span><button class="closePlayer" type="button"><i class="fa-solid fa-ellipsis"></i></button></div>
+<div class="fullPlayerBody">
+<div class="fullArtwork"><img id="fullCover" src="images/cover1.jpg" alt="Album cover"></div>
+<div class="fullTrackMeta"><p id="fullArtist">My Songs</p><h1 id="fullTitle">Song 1</h1><button id="fullLike" class="fullLike" type="button"><i class="fa-regular fa-heart"></i></button></div>
+<div class="fullProgress"><div class="fullTimes"><span id="fullCurrent">0:00</span><span id="fullDuration">0:00</span></div><input id="fullProgressInput" type="range" min="0" max="100" value="0"></div>
+<div class="fullControls"><button id="fullShuffle" type="button"><i class="fa-solid fa-shuffle"></i></button><button id="fullPrev" type="button"><i class="fa-solid fa-backward-step"></i></button><button id="fullPlay" class="fullPlay" type="button"><i class="fa-solid fa-play"></i></button><button id="fullNext" type="button"><i class="fa-solid fa-forward-step"></i></button><button id="fullRepeat" type="button"><i class="fa-solid fa-repeat"></i></button></div>
+<div class="fullVolume"><i class="fa-solid fa-volume-high"></i><input id="fullVolume" type="range" min="0" max="1" step="0.01" value="1"></div>
+</div>
+</div>
+<div id="youtubeDock" class="youtubeDock" aria-hidden="true"><div id="youtubePlayer"></div></div>
+<audio id="audio" preload="metadata"></audio>
+<div class="toast" id="toast"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="script.js?v=20260903fix7"></script>
+</body>
+</html>
