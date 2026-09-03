@@ -1,154 +1,24 @@
-const songs = [
-{
-title:"Song 1",
-file:"songs/song1.mp3",
-cover:"images/cover1.jpg"
-},
-{
-title:"Song 2",
-file:"songs/song2.mp3",
-cover:"images/cover2.jpg"
-}
-];
-
-let currentSong = 0;
-
-const audio = document.getElementById("audio");
-const title = document.getElementById("title");
-const cover = document.getElementById("cover");
-const playBtn = document.getElementById("play");
-const prevBtn = document.getElementById("prev");
-const nextBtn = document.getElementById("next");
-const progress = document.getElementById("progress");
-const currentTime = document.getElementById("currentTime");
-const duration = document.getElementById("duration");
-const volume = document.getElementById("volume");
-
-function loadSong(index){
-
-audio.src = songs[index].file;
-title.innerHTML = songs[index].title;
-cover.src = songs[index].cover;
-
-audio.load();
-
-}
-
-loadSong(currentSong);
-
-playBtn.addEventListener("click",()=>{
-
-if(audio.paused){
-
-audio.play();
-
-playBtn.innerHTML='<i class="fas fa-pause"></i>';
-
-}
-else{
-
-audio.pause();
-
-playBtn.innerHTML='<i class="fas fa-play"></i>';
-
-}
-
-});
-
-nextBtn.addEventListener("click",()=>{
-
-currentSong++;
-
-if(currentSong>=songs.length){
-
-currentSong=0;
-
-}
-
-loadSong(currentSong);
-
-audio.play();
-
-playBtn.innerHTML='<i class="fas fa-pause"></i>';
-
-});
-
-prevBtn.addEventListener("click",()=>{
-
-currentSong--;
-
-if(currentSong<0){
-
-currentSong=songs.length-1;
-
-}
-
-loadSong(currentSong);
-
-audio.play();
-
-playBtn.innerHTML='<i class="fas fa-pause"></i>';
-
-});
-
-audio.addEventListener("loadedmetadata",()=>{
-
-progress.max = audio.duration;
-
-duration.innerHTML =
-formatTime(audio.duration);
-
-});
-
-audio.addEventListener("timeupdate",()=>{
-
-progress.value = audio.currentTime;
-
-currentTime.innerHTML =
-formatTime(audio.currentTime);
-
-});
-
-progress.addEventListener("input",()=>{
-
-audio.currentTime = progress.value;
-
-});
-
-volume.addEventListener("input",()=>{
-
-audio.volume = volume.value;
-
-});
-
-audio.addEventListener("ended",()=>{
-
-currentSong++;
-
-if(currentSong>=songs.length){
-
-currentSong=0;
-
-}
-
-loadSong(currentSong);
-
-audio.play();
-
-});
-
-function formatTime(time){
-
-let min = Math.floor(time/60);
-
-let sec = Math.floor(time%60);
-
-if(sec<10){
-
-sec="0"+sec;
-
-}
-
-return min+":"+sec;
-
-}
+const songs=[{title:"Song 1",file:"songs/song1.mp3",cover:"images/cover1.jpg"},{title:"Song 2",file:"songs/song2.mp3",cover:"images/cover2.jpg"}];
+let currentSong=0,shuffleOn=false,repeatOn=false,liked=new Set();
+const audio=document.getElementById("audio"),title=document.getElementById("title"),cover=document.getElementById("cover"),playBtn=document.getElementById("play"),prevBtn=document.getElementById("prev"),nextBtn=document.getElementById("next"),progress=document.getElementById("progress"),currentTime=document.getElementById("currentTime"),duration=document.getElementById("duration"),volume=document.getElementById("volume"),artist=document.getElementById("artist"),likeBtn=document.getElementById("like"),toast=document.getElementById("toast");
+const songCards=document.getElementById("songCards"),searchCards=document.getElementById("searchCards"),libraryGrid=document.getElementById("libraryGrid");
+function formatTime(t){if(!Number.isFinite(t))return"0:00";const m=Math.floor(t/60),s=Math.floor(t%60).toString().padStart(2,"0");return`${m}:${s}`}
+function loadSong(i,autoplay=false){currentSong=(i+songs.length)%songs.length;const s=songs[currentSong];audio.src=s.file;title.textContent=s.title;cover.src=s.cover;artist.textContent="My Songs";audio.load();updateLike();if(autoplay)audio.play().catch(()=>{});playBtn.innerHTML=autoplay?'<i class="fa-solid fa-pause"></i>':'<i class="fa-solid fa-play"></i>'}
+function updateLike(){likeBtn.innerHTML=liked.has(currentSong)?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>';likeBtn.classList.toggle("liked",liked.has(currentSong))}
+function makeCard(s,i){const d=document.createElement("article");d.className="songCard";d.innerHTML=`<img src="${s.cover}" alt="${s.title}"><h3>${s.title}</h3><p>My Songs • Local track</p><button class="cardPlay" data-index="${i}" aria-label="Play ${s.title}"><i class="fa-solid fa-play"></i></button>`;return d}
+function renderCards(target,list=songs){target.innerHTML="";list.forEach(s=>target.appendChild(makeCard(s,songs.indexOf(s))));if(!list.length)target.innerHTML='<p class="empty">No songs found.</p>'}
+function renderLibrary(){libraryGrid.innerHTML="";songs.forEach((s,i)=>{const d=document.createElement("div");d.className="libraryRow";d.innerHTML=`<img src="${s.cover}" alt=""><div><h3>${s.title}</h3><p>Local track • ${liked.has(i)?"Liked":"In your library"}</p></div>`;d.onclick=()=>loadSong(i,true);libraryGrid.appendChild(d)})}
+function showView(name){document.querySelectorAll(".view").forEach(v=>v.classList.add("hidden"));document.getElementById(name+"View").classList.remove("hidden");document.querySelectorAll(".navItem").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="library")renderLibrary();if(name==="search")document.getElementById("search").focus()}
+function toastMsg(msg){toast.textContent=msg;toast.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>toast.classList.remove("show"),1600)}
+loadSong(currentSong);renderCards(songCards);renderCards(searchCards);
+playBtn.onclick=()=>{if(audio.paused){audio.play().then(()=>playBtn.innerHTML='<i class="fa-solid fa-pause"></i>').catch(()=>toastMsg("This audio file could not be played"))}else{audio.pause();playBtn.innerHTML='<i class="fa-solid fa-play"></i>'}};
+nextBtn.onclick=()=>{let n;if(shuffleOn&&songs.length>1){do n=Math.floor(Math.random()*songs.length);while(n===currentSong)}else n=currentSong+1;loadSong(n,true)};
+prevBtn.onclick=()=>{if(audio.currentTime>3){audio.currentTime=0;return}loadSong(currentSong-1,true)};
+shuffle.onclick=()=>{shuffleOn=!shuffleOn;shuffle.classList.toggle("active",shuffleOn);toastMsg(shuffleOn?"Shuffle on":"Shuffle off")};
+repeat.onclick=()=>{repeatOn=!repeatOn;repeat.classList.toggle("active",repeatOn);toastMsg(repeatOn?"Repeat on":"Repeat off")};
+likeBtn.onclick=()=>{liked.has(currentSong)?liked.delete(currentSong):liked.add(currentSong);updateLike();renderLibrary();toastMsg(liked.has(currentSong)?"Added to Liked Songs":"Removed from Liked Songs")};
+progress.oninput=()=>{if(audio.duration)audio.currentTime=(progress.value/100)*audio.duration};volume.oninput=()=>audio.volume=volume.value;
+audio.addEventListener("loadedmetadata",()=>{duration.textContent=formatTime(audio.duration)});audio.addEventListener("timeupdate",()=>{currentTime.textContent=formatTime(audio.currentTime);progress.value=audio.duration?(audio.currentTime/audio.duration)*100:0});audio.addEventListener("play",()=>playBtn.innerHTML='<i class="fa-solid fa-pause"></i>');audio.addEventListener("pause",()=>playBtn.innerHTML='<i class="fa-solid fa-play"></i>');audio.addEventListener("ended",()=>{if(repeatOn){audio.currentTime=0;audio.play()}else nextBtn.click()});
+document.addEventListener("click",e=>{const card=e.target.closest(".cardPlay");if(card){e.stopPropagation();loadSong(Number(card.dataset.index),true)}});
+document.querySelectorAll(".navItem").forEach(b=>b.onclick=()=>showView(b.dataset.view));document.getElementById("showAll").onclick=()=>showView("library");document.getElementById("back").onclick=()=>window.history.back();document.getElementById("forward").onclick=()=>window.history.forward();document.getElementById("addPlaylist").onclick=()=>toastMsg("Playlist creation coming soon");document.getElementById("queue").onclick=()=>toastMsg(`${songs.length} songs in queue`);
+const search=document.getElementById("search");search.oninput=()=>{const q=search.value.toLowerCase().trim();showView("search");renderCards(searchCards,songs.filter(s=>s.title.toLowerCase().includes(q)))};
